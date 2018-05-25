@@ -45,7 +45,7 @@ for n in range(len(txtfiles)):
 THFM = {}
 HFM = {}
 
-for i in range(2):
+for i in range(1):
 	for term in allwords[i]:
 		if term not in THFM.keys():
 			THFM[term]={}
@@ -55,9 +55,20 @@ for i in range(2):
 			else:
 				THFM[term][keyword]+=1
 
+			if keyword not in HFM.keys():
+				HFM[keyword]={}
+			if term not in HFM[keyword].keys():
+				HFM[keyword][term]=1
+			else:
+				HFM[keyword][term]+=1
+
+
 print THFM["national"]
 print THFM["national"].keys()
-print sum(THFM["national"].values()) 
+print sum(THFM["national"].values())
+
+print HFM["Forests"] 
+
 
 
 '''
