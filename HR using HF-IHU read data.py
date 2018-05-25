@@ -1,3 +1,4 @@
+from __future__ import division
 import os
 import glob
 import re
@@ -34,9 +35,6 @@ for k in range(len(txtfiles)):
 	#cleantext=re.sub('[^a-z\ ]+','',open('/home/anubhav/Desktop/naum/saurav-tagging/data/fao/'+txtfiles[k],"r").read())
 	#print(cleantext)
 
-
-
-
 #print cleantext[22]
 allwords=[]
 for n in range(len(txtfiles)):
@@ -45,16 +43,20 @@ for n in range(len(txtfiles)):
 THFM = {}
 HFM = {}
 
+# This calculates THFM and HFM dictionary of dictionaries
+
 for i in range(1):
 	for term in allwords[i]:
 		if term not in THFM.keys():
 			THFM[term]={}
 		for keyword in keywords[i]:
+			# For THFM
 			if keyword not in THFM[term].keys():
 				THFM[term][keyword]=1
 			else:
 				THFM[term][keyword]+=1
 
+			# For HFM 
 			if keyword not in HFM.keys():
 				HFM[keyword]={}
 			if term not in HFM[keyword].keys():
@@ -63,12 +65,32 @@ for i in range(1):
 				HFM[keyword][term]+=1
 
 
-print THFM["national"]
-print THFM["national"].keys()
-print sum(THFM["national"].values())
+#print THFM["national"]
+#print THFM["national"].keys()
+#print sum(THFM["national"].values())
 
-print HFM["Forests"] 
+#print HFM["Forests"] 
 
+# Creates hf and ihu dictionary of dictionaries
+
+hf = {}
+for term in THFM.keys():
+	hf[term]={}
+	summation=sum(THFM[term].values())
+	for keyword in THFM[term].keys():
+		hf[term][keyword] = THFM[term][keyword]/summation
+
+ihu = {}
+corpus_size = 0
+for i in range(len(txtfiles)):
+	corpus_size+=len(allwords[i])
+
+for keyword in HFM.keys():
+	ihu[keyword]= corpus_size/sum(HFM[keyword].values())
+
+print corpus_size
+print ihu["Forests"]
+print hf["national"]["Forests"]
 
 
 '''
