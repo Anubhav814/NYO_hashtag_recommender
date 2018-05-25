@@ -9,6 +9,11 @@ from nltk.stem import PorterStemmer
 stemmer = PorterStemmer()
 
 
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
+#word_tokenize accepts a string as an input, not a file.
+stop_words = set(stopwords.words('english'))
+
 # Preparing Data to be used
 
 dirs=os.listdir("fao")
@@ -52,7 +57,8 @@ for word in allwords:
 	for inword in word:
 		inword=stemmer.stem(inword)
 		
-		b1.append(inword)
+		if not inword in stop_words:
+			b1.append(inword)
 
 	stem_words.append(b1)
 
