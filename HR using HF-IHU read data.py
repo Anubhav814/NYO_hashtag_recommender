@@ -5,6 +5,10 @@ import re
 
 from collections import Counter
 
+from nltk.stem import PorterStemmer
+stemmer = PorterStemmer()
+
+
 # Preparing Data to be used
 
 dirs=os.listdir("fao")
@@ -40,13 +44,26 @@ allwords=[]
 for n in range(len(txtfiles)):
 	allwords.append(cleantext[n].split())
 
+
+stem_words=[]
+
+for word in allwords:
+	b1=[]
+	for inword in word:
+		inword=stemmer.stem(inword)
+		
+		b1.append(inword)
+
+	stem_words.append(b1)
+
+
 THFM = {}
 HFM = {}
 
 # This calculates THFM and HFM dictionary of dictionaries
 
 for i in range(1):
-	for term in allwords[i]:
+	for term in stem_words[i]:
 		if term not in THFM.keys():
 			THFM[term]={}
 		for keyword in keywords[i]:
@@ -83,7 +100,7 @@ for term in THFM.keys():
 ihu = {}
 corpus_size = 0
 for i in range(len(txtfiles)):
-	corpus_size+=len(allwords[i])
+	corpus_size+=len(stem_words[i])
 
 for keyword in HFM.keys():
 	ihu[keyword]= corpus_size/sum(HFM[keyword].values())
